@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Text, View ,Button} from 'react-native';
+import Login from './Screen/LoginSreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
@@ -12,9 +13,10 @@ const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator initialRouteName='Login'>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="DetailsScreen" component={DetailsScreen} />
+      <Drawer.Screen name="Login" component={Login} />
     </Drawer.Navigator>
   );
 }
