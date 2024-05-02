@@ -45,28 +45,49 @@ const styles = StyleSheet.create({
 });
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
   const onPress = () => {
-    if (email === 'admin' && password === 'admin') {
-      navigation.navigate('DetailsScreen');
-    } else {
-      alert('Email or Password is incorrect');
-    }
+    // if (email === 'admin' && password === 'admin') {
+    //   navigation.navigate('DetailsScreen');
+    // } else {
+    //   alert('Email or Password is incorrect');
+    // }
+
+
+    //make a request to the server with username and password to get the token if return 200 then navigate to the details screen
+    fetch('http://api-biwase.us-east-2.elasticbeanstalk.com/api/CMMSBT/Auth/Login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then(response => {
+        if (response.status === 200) {
+          navigation.navigate('DetailsScreen');
+        } else {
+          alert('Email or Password is incorrect');
+        }
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>Login</Text>
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>UserName</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
-        keyboardType="email-address"
+        keyboardType="username"
         autoCapitalize="none"
-        onChangeText={text => setEmail(text)}
+        onChangeText={text => setUserName(text)}
       />
       <Text style={styles.label}>Password</Text>
       <TextInput
