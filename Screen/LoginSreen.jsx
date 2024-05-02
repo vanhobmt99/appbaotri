@@ -33,7 +33,15 @@ const styles = StyleSheet.create({
     color: 'blue',
     fontweight: 'bold',
 
-},
+  },
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
 });
 
 const Login = () => {
@@ -67,8 +75,8 @@ const Login = () => {
         secureTextEntry
         autoCapitalize="none"
         onChangeText={text => setPassword(text)}
-      />
-      <Button title="Login" backgroundColor={'green'} onPress={onPress}/>
+        />
+      <Button title="Login" style={styles.button} onPress={onPress}/>
     </View>
   );
 };
