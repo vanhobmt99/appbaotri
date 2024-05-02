@@ -39,6 +39,7 @@ function DetailsScreen({ route }: { route: any }) { // Add 'route' parameter
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Details Screen</Text>
       <Text>{JSON.stringify(data)}</Text> 
+      <Text>Ahihi</Text>
     </View>
   );
 }
