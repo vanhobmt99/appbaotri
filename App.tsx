@@ -1,68 +1,79 @@
-import React, { useEffect } from 'react';
-import { Text, View, Button } from 'react-native';
-import Login from './Screen/LoginSreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+//import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator, DrawerNavigationOptions } from '@react-navigation/drawer';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { enableScreens } from 'react-native-screens';
 import Toast from 'react-native-toast-message';
 
+import Login from './src/screens/Login';
+import Home from './src/screens/Home';
+
 enableScreens();
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
-function MyDrawer() {
+const navOptionHandler: DrawerNavigationOptions = {
+  headerStyle: {
+    backgroundColor: '#05a4e4',
+  },
+  headerTintColor: '#fff',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
+  headerTitleAlign: 'center',
+  title: 'APP BẢO TRÌ THIẾT BỊ',
+};
+
+function MyDrawer({ isLogged }: { isLogged: boolean }) {
   return (
-    <Drawer.Navigator initialRouteName='Login'>
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="DetailsScreen" component={DetailsScreen} />
-      <Drawer.Screen name="Login" component={Login} />
+    <Drawer.Navigator initialRouteName={isLogged ? 'Home' : 'Login'}>
+      <Drawer.Screen name="Home" component={Home} options={navOptionHandler} />
+      <Drawer.Screen name="Login" component={Login} options={{ headerShown: false, title:'Thoát' }} />
     </Drawer.Navigator>
   );
 }
 
-function DetailsScreen({ route }: { route: any }) { // Add 'route' parameter
-  const showToast = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Hello',
-    });
-  };
+function App() {
+  const [isLogged, setIsLogged] = useState<boolean>(false);
 
-  useEffect(() => {
-    showToast();
+  useEffect(() => {    
+    const checkLogin = async () => {
+      const loggedIn = await checkLoginStatus();
+      setIsLogged(loggedIn);
+    };
+
+    checkLogin();
   }, []);
 
-  const { data } = route.params; // Access 'route' object
+  const checkLoginStatus = async () => {
+    try {
+      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+      return isLoggedIn === 'true';
+    } catch (error) {
+      console.error('Error checking login status:', error);
+      return false;
+    }
+  };
 
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-      <Text>{JSON.stringify(data)}</Text> 
-      <Text>Ahihi</Text>
-    </View>
-  );
-}
+  const storeLoginStatus = async () => {
+    try {
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+    } catch (error) {
+      console.error('Error storing login status:', error);
+    }
+  };  
 
-function HomeScreen({ navigation }: { navigation: any }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('DetailsScreen')}
-      />
-    </View>
-  );
-}
-
-const Stack = createNativeStackNavigator();
-
-function App() {
   return (
     <NavigationContainer>
-      <MyDrawer />
-      <Toast />
+      <Stack.Navigator initialRouteName = 'Login'>
+        <Stack.Screen name="Login" options={{ headerShown: false }}>
+          {(props) => <MyDrawer {...props} isLogged={isLogged} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+      <Toast />      
     </NavigationContainer>
   );
 }
