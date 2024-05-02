@@ -67,6 +67,12 @@ const Login = () => {
     })
       .then(response => {
         if (response.status === 200) {
+          response.json().then(data => {
+            //set local storage
+            console.log(data);
+          }
+          );
+          
           navigation.navigate('DetailsScreen');
         } else {
           alert('Email or Password is incorrect');
