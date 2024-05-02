@@ -21,7 +21,7 @@ function MyDrawer() {
   );
 }
 
-function DetailsScreen() {
+function DetailsScreen({ route }: { route: any }) { // Add 'route' parameter
   const showToast = () => {
     Toast.show({
       type: 'success',
@@ -33,10 +33,12 @@ function DetailsScreen() {
     showToast();
   }, []);
 
+  const { data } = route.params; // Access 'route' object
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Details Screen</Text>
-
+      <Text>{JSON.stringify(data)}</Text> 
     </View>
   );
 }

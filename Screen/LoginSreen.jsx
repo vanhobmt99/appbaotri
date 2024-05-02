@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -49,6 +51,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
+
   const onPress = () => {
     // if (email === 'admin' && password === 'admin') {
     //   navigation.navigate('DetailsScreen');
@@ -68,14 +71,26 @@ const Login = () => {
       .then(response => {
         if (response.status === 200) {
           response.json().then(data => {
+            Toast.show({
+              type: 'success',
+              text1: 'Login successful',
+            });
             //set local storage
             console.log(data);
+            navigation.navigate('DetailsScreen', { data: response});
           }
           );
-          
-          navigation.navigate('DetailsScreen');
+
+
+          // how to push data to the next screen
+
         } else {
-          alert('Email or Password is incorrect');
+          Toast.show({
+            type: 'error',
+            text1: 'Email or Password is incorrect',
+          });
+
+
         }
       })
       .catch(error => {
@@ -103,7 +118,10 @@ const Login = () => {
         autoCapitalize="none"
         onChangeText={text => setPassword(text)}
         />
-      <Button title="Login" style={styles.button} onPress={onPress}/>
+      {/* <Button title="Login" style={styles.button} onPress={onPress}/> */}
+      <TouchableOpacity style={styles.button} onPress={onPress}>
+        <Text>Đăng Nhập</Text>
+      </TouchableOpacity>
     </View>
   );
 };
