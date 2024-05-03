@@ -25,7 +25,7 @@ const navOptionHandler: DrawerNavigationOptions = {
     fontWeight: 'bold',
   },
   headerTitleAlign: 'center',
-  title: 'APP BẢO TRÌ THIẾT BỊ',
+  // title: 'APP BẢO TRÌ THIẾT BỊ',
 };
 
 function MyDrawer({ isLogged }: { isLogged: boolean }) {
@@ -71,7 +71,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName = 'Login'>
-        <Stack.Screen name="Login" options={{ headerShown: false }}>
+        <Stack.Screen name="Logins" options={{ headerShown: false }}>
           {(props) => <MyDrawer {...props} isLogged={isLogged} />}
         </Stack.Screen>
       </Stack.Navigator>
