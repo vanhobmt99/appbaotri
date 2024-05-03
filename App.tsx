@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 
 import Login from './src/screens/Login';
 import Home from './src/screens/Home';
+import Detail from './src/screens/Detail';
 
 enableScreens();
 const Drawer = createDrawerNavigator();
@@ -30,8 +31,9 @@ const navOptionHandler: DrawerNavigationOptions = {
 function MyDrawer({ isLogged }: { isLogged: boolean }) {
   return (
     <Drawer.Navigator initialRouteName={isLogged ? 'Home' : 'Login'}>
-      <Drawer.Screen name="Home" component={Home} options={navOptionHandler} />
-      <Drawer.Screen name="Login" component={Login} options={{ headerShown: false, title:'Thoát' }} />
+      <Drawer.Screen name="Home" component={Home} options={{ ...navOptionHandler, title:'TRANG CHỦ' }} />
+      <Drawer.Screen name="Detail" component={Detail} options={{ ...navOptionHandler, title:'CHI TIẾT' }} />
+      <Drawer.Screen name="Login" component={Login} options={{ headerShown: false, title:'THOÁT' }} />
     </Drawer.Navigator>
   );
 }
