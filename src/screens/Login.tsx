@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../screens/types'; 
 import { GlobalContext } from '../store/GlobalProvider';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -31,6 +32,8 @@ const Login: React.FC<Props> = ({ navigation }) => {
       if (response.status === 200) {
         const data = await response.json();
         console.log(data);
+        //set localstorage token
+        await AsyncStorage.setItem('token', data.token);
         navigation.navigate('Home');
       } else {
         Toast.show({
